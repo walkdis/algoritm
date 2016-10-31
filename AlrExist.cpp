@@ -3,11 +3,8 @@
 #include <string>
 
 
-AnimalAlrExist::AnimalAlrExist(double x, double y) :exception() {
-    string textx, texty;
-    textx = x;
-    texty = y;
-    msg = "Animal with coordinates: " + textx + texty + " already exist";
+AnimalAlrExist::AnimalAlrExist() :exception() {
+    msg = "Animal with such coordinates already exist";
 }
 const char * AnimalAlrExist::what() const throw() {
     return msg.c_str();

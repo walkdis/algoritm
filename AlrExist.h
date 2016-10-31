@@ -11,6 +11,6 @@ class AnimalAlrExist:public exception {
     string msg;
 
 public:
-    explicit AnimalAlrExist(double x, double y);
+    explicit AnimalAlrExist();
     const char* what() const throw();
 };

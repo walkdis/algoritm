@@ -1,6 +1,8 @@
 // Copyright 2016 <Anna Simakova>
 #pragma once
 
+#include "AlrExist.h"
+#include "Coordinates.h"
 #include <stdio.h>
 #include <iostream>
 
@@ -13,13 +15,10 @@ using std::endl;
 class Animals {
     double x;
     double y;
-    char type;
-    double p;
 
 
 public:
-    Animals(double x, double y, char type);
-    Animals(double x, double y, char type, double p);
+    Animals(double x, double y);
     ~Animals();
     friend ostream& operator<<(ostream& stream, const Animals& anim);
     double GetX();

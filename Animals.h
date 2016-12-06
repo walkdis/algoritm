@@ -23,12 +23,10 @@ public:
     friend ostream& operator<<(ostream& stream, const Animals& anim);
     double GetX();
     double GetY();
-    char GetType();
-    double GetP();
+   // double GetP();
     double SetX(double x);
     double SetY(double y);
-    char SetType(char type);
-    double SetP(double p);
+   // double SetP(double p);
     Animals(const Animals& anim);
     const Animals& operator =(const Animals& anim);
     bool operator ==(const Animals& anim) const;

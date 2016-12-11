@@ -3,6 +3,7 @@
 
 #include "AlrExist.h"
 #include "Coordinates.h"
+#include "Probability.h"
 #include <stdio.h>
 #include <iostream>
 
@@ -13,21 +14,33 @@ using ::std::ostream;
 using std::endl;
 
 class Animals {
-    double x;
-    double y;
+    int x;
+    int y;
+    int p;
+    int type;
+    double distance;
+    bool exist;
 
 
 public:
-    Animals(double x, double y);
+    Animals();
+    Animals(int type, int x, int y, int p);
     ~Animals();
     friend ostream& operator<<(ostream& stream, const Animals& anim);
-    double GetX();
-    double GetY();
-   // double GetP();
-    double SetX(double x);
-    double SetY(double y);
-   // double SetP(double p);
+    int GetX();
+    int GetY();
+    int GetP();
+    int GetType();
+    double GetDistance();
+    bool GetExist();
+    void SetX(int x);
+    void SetY(int y);
+    void SetP(int p);
+    void SetType(int type);
+    void SetDistance(double distance);
+    void SetExist(bool ex);
     Animals(const Animals& anim);
     const Animals& operator =(const Animals& anim);
     bool operator ==(const Animals& anim) const;
+    bool operator !=(const Animals& anim) const;
 };

@@ -4,7 +4,7 @@
 
 
 Probability::Probability() :exception() {
-    msg = "Probability should lie in the interval (0;1]";
+    msg = "Probability should lie in the interval (0;100]";
 }
 const char * Probability::what() const throw() {
     return msg.c_str();

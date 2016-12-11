@@ -39,36 +39,6 @@ vector<vector<Animals>> DoMatr(vector<Animals> arr) {
     return matrix;
 }
 
-vector<vector<Animals>> GetRowMatr(vector<vector<Animals>> arr, int size) {
-    vector<vector<Animals>> matrixforRow(size);
-    for (unsigned int i = 0; i < size; i++)
-        matrixforRow[i].resize(size);
-    for (unsigned int i = 0; i < size; i++)
-        for (unsigned j = 0; j < size; j++)
-            matrixforRow[i][j].SetExist(0);
-    for (unsigned int i = 0; i < size; i++) {
-        double min = GetMinRow(arr, i);
-        for (unsigned int j = 0; j < size; j++) {
-            if (min == arr[i][j].GetDistance())
-                matrixforRow[i][j] = arr[i][j];
-        }
-    }
-}
-
-vector<vector<Animals>> GetColMatr(vector<vector<Animals>> arr, int size) {
-    vector<vector<Animals>> matrixforCol(size);
-    for (unsigned int i = 0; i < size; i++)
-        matrixforCol[i].resize(size);
-    for (unsigned int i = 0; i < size; i++) {
-        double min = GetMinCol(arr, i);
-        for (unsigned int j = 0; j < size; j++) {
-            if (min == arr[j][i].GetDistance())
-                matrixforCol[j][i] = arr[j][i];
-        }
-    }
-}
-
-
 
 double GetMinRow(vector<vector<Animals>> matr, int num) {
     double min = INT32_MAX;
@@ -86,6 +56,36 @@ double GetMinCol(vector<vector<Animals>> matr, int num) {
             min = matr[i][num].GetDistance();
     return min;
 }
+vector<vector<Animals>> GetRowMatr(vector<vector<Animals>> arr, int size) {
+    vector<vector<Animals>> matrixforRow(size);
+    for (unsigned int i = 0; i < size; i++)
+        matrixforRow[i].resize(size);
+    for (unsigned int i = 0; i < size; i++)
+        for (unsigned j = 0; j < size; j++)
+            matrixforRow[i][j].SetExist(0);
+    for (unsigned int i = 0; i < size; i++) {
+        double min = GetMinRow(arr, i);
+        for (unsigned int j = 0; j < size; j++) {
+            if (min == arr[i][j].GetDistance())
+                matrixforRow[i][j] = arr[i][j];
+        }
+    }
+    return matrixforRow;
+}
+
+vector<vector<Animals>> GetColMatr(vector<vector<Animals>> arr, int size) {
+    vector<vector<Animals>> matrixforCol(size);
+    for (unsigned int i = 0; i < size; i++)
+        matrixforCol[i].resize(size);
+    for (unsigned int i = 0; i < size; i++) {
+        double min = GetMinCol(arr, i);
+        for (unsigned int j = 0; j < size; j++) {
+            if (min == arr[j][i].GetDistance())
+                matrixforCol[j][i] = arr[j][i];
+        }
+    }
+    return matrixforCol;
+}
 
 vector<vector<Animals>> GetLessMatr(vector<vector<Animals>> matrix, vector<vector<Animals>> matrixforRow, vector<vector<Animals>> matrixforCol, vector<Animals> ms, int size) {
     int type;
@@ -99,30 +99,76 @@ vector<vector<Animals>> GetLessMatr(vector<vector<Animals>> matrix, vector<vecto
                             if (m == j)
                                 m--;
                             matrix[m][t].SetExist(0);
-                            matrixforRow[m][t].SetExist(0);
-                            matrixforCol[m][t].SetExist(0);
                         }
                     for (unsigned int t = 0; t < ms.size(); t++) {
                         matrix[t][m].SetExist(0);
-                        matrixforRow[t][m].SetExist(0);
-                        matrixforCol[t][m].SetExist(0);
                     }
                 }
             }
 
         }
     }
+    return matrix;
+}
+
+vector<vector<Animals>> GetLessMatrRow(vector<vector<Animals>> matrix, vector<vector<Animals>> matrixforRow, vector<vector<Animals>> matrixforCol, vector<Animals> ms, int size) {
+    int type;
+    for (unsigned int i = 0; i < size; i++) {
+        for (unsigned int j = 0; j < matrix[i].size(); j++){
+            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != 0)) {
+                type = matrix[i][j].GetType();
+                for (unsigned int m = size - 1; m != 0; m--) {
+                    if (ms[m].GetType() == type)
+                        for (unsigned int t = 0; t < ms.size(); t++) {
+                            if (m == j)
+                                m--;
+                            matrixforRow[m][t].SetExist(0);
+                        }
+                    for (unsigned int t = 0; t < ms.size(); t++) {
+                        matrixforRow[t][m].SetExist(0);
+                    }
+                }
+            }
+
+        }
+    }
+    return matrixforRow;
+}
+
+vector<vector<Animals>> GetLessMatrCol(vector<vector<Animals>> matrix, vector<vector<Animals>> matrixforRow, vector<vector<Animals>> matrixforCol, vector<Animals> ms, int size) {
+    int type;
+    for (unsigned int i = 0; i < size; i++) {
+        for (unsigned int j = 0; j < matrix[i].size(); j++){
+            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != 0)) {
+                type = matrix[i][j].GetType();
+                for (unsigned int m = size - 1; m != 0; m--) {
+                    if (ms[m].GetType() == type)
+                        for (unsigned int t = 0; t < ms.size(); t++) 
+                            matrixforCol[m][t].SetExist(0);                       
+                    for (unsigned int t = 0; t < ms.size(); t++) 
+                        matrixforCol[t][m].SetExist(0);                    
+                }
+            }
+
+        }
+    }
+    return matrix;
 }
 
 int CountType(vector<Animals> mas) {
-    vector < int > ;
+    vector < int > rt;
     unsigned int i, type;
-    for (i = 0; i < mas.size(); i++)
-       type = mas[i].GetType();
-        for (unsigned int j = i-1; j!=0; j--)
-
-
-
+    for (i = 0; i < mas.size(); i++){
+        type = mas[i].GetType();
+        for (unsigned int j = 0; j < rt.size() + 1; j++)
+            if (rt[j] == type)
+                break;
+            else if (rt[j] != type)
+                j++;
+            else if (j == rt.size())
+                rt.push_back(type);
+    }
+    return rt.size();
 }
 
 Animals GetforResult(vector<vector<Animals>> matrix, vector<vector<Animals>> matrixforRow, vector<vector<Animals>> matrixforCol, vector<Animals> ms, int size) {

@@ -91,17 +91,19 @@ vector<vector<Animals>> GetLessMatr(vector<vector<Animals>> matrix, vector<vecto
     int type;
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < matrix[i].size(); j++){
-            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != 0)) {
+            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != false) && (i != j)) {
                 type = matrix[i][j].GetType();
-                for (unsigned int m = size - 1; m != 0; m--) {
-                    if (ms[m].GetType() == type)
+                for (unsigned int m = 0; m < size; m++) {
+                    if (ms[m].GetType() == type){
                         for (unsigned int t = 0; t < ms.size(); t++) {
-                            if (m == j)
-                                m--;
-                            matrix[m][t].SetExist(0);
+                            if ((m == j) && (m != 5))
+                                break;
+                            // m++;
+                            matrix[m][t].SetExist(false);
                         }
+                    }
                     for (unsigned int t = 0; t < ms.size(); t++) {
-                        matrix[t][m].SetExist(0);
+                        matrix[t][m].SetExist(false);
                     }
                 }
             }
@@ -115,21 +117,23 @@ vector<vector<Animals>> GetLessMatrRow(vector<vector<Animals>> matrix, vector<ve
     int type;
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < matrix[i].size(); j++){
-            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != 0)) {
+            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != false) && (i != j)) {
                 type = matrix[i][j].GetType();
-                for (unsigned int m = size - 1; m != 0; m--) {
-                    if (ms[m].GetType() == type)
+                for (unsigned int m = 0; m < size; m++) {
+                    if (ms[m].GetType() == type){
                         for (unsigned int t = 0; t < ms.size(); t++) {
-                            if (m == j)
-                                m--;
-                            matrixforRow[m][t].SetExist(0);
+                            if ((m == j) && (m != 5))
+                                break;
+                            // m++;
+                            matrixforRow[m][t].SetExist(false);
                         }
-                    for (unsigned int t = 0; t < ms.size(); t++) {
-                        matrixforRow[t][m].SetExist(0);
+                        for (unsigned int t = 0; t < ms.size(); t++) {
+                            matrixforRow[t][m].SetExist(false);
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
     return matrixforRow;
@@ -139,36 +143,37 @@ vector<vector<Animals>> GetLessMatrCol(vector<vector<Animals>> matrix, vector<ve
     int type;
     for (unsigned int i = 0; i < size; i++) {
         for (unsigned int j = 0; j < matrix[i].size(); j++){
-            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != 0)) {
+            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != false) && (i != j)) {
                 type = matrix[i][j].GetType();
-                for (unsigned int m = size - 1; m != 0; m--) {
-                    if (ms[m].GetType() == type)
-                        for (unsigned int t = 0; t < ms.size(); t++) 
-                            matrixforCol[m][t].SetExist(0);                       
-                    for (unsigned int t = 0; t < ms.size(); t++) 
-                        matrixforCol[t][m].SetExist(0);                    
+                for (unsigned int m = 0; m < size; m++) {
+                    if (ms[m].GetType() == type){
+                        for (unsigned int t = 0; t < ms.size(); t++)
+                            matrixforCol[m][t].SetExist(false);
+                        for (unsigned int t = 0; t < ms.size(); t++)
+                            matrixforCol[t][m].SetExist(false);
+                    }
                 }
-            }
 
+            }
         }
     }
-    return matrix;
+    return matrixforCol;
 }
 
 int CountType(vector<Animals> mas) {
-    vector < int > rt;
+    vector < int > rt(1);
     unsigned int i, type;
     for (i = 0; i < mas.size(); i++){
         type = mas[i].GetType();
-        for (unsigned int j = 0; j < rt.size() + 1; j++)
+        for (unsigned int j = 0; j < rt.size(); j++)
             if (rt[j] == type)
                 break;
-            else if (rt[j] != type)
-                j++;
-            else if (j == rt.size())
+            else if (j == rt.size()-1)
                 rt.push_back(type);
+
+
     }
-    return rt.size();
+    return (rt.size()-1);
 }
 
 Animals GetforResult(vector<vector<Animals>> matrix, vector<vector<Animals>> matrixforRow, vector<vector<Animals>> matrixforCol, vector<Animals> ms, int size) {
@@ -229,67 +234,32 @@ int main() {
         i += 3;
     }
 
-    
-        /*(mas.size());
-    for (unsigned int i = 0; i < mas.size(); i++)
-        matrixforRow[i].resize(mas.size());
-    for (unsigned int i = 0; i < mas.size(); i++)
-        for (unsigned j = 0; j < mas.size(); j++)
-            matrixforRow[i][j].SetExist(0);
-            */
-  
+    int amount = CountType(mas);
+
     vector<vector<Animals>> matrix = DoMatr(mas);
     vector<vector<Animals>> matrixforRow = GetRowMatr(matrix, mas.size());
     vector<vector<Animals>> matrixforCol = GetColMatr(matrix, mas.size());
-    /*
-    for (unsigned int i = 0; i < mas.size(); i++) {
-        double min = GetMinRow(matrix, i);
-        for (unsigned int j = 0; j < mas.size(); j++) {
-            if (min == matrix[i][j].GetDistance())
-                matrixforRow[i][j] = matrix[i][j];
-        }
-    }
-    for (unsigned int i = 0; i < mas.size(); i++) {
-        double min = GetMinCol(matrix, i);
-        for (unsigned int j = 0; j < mas.size(); j++) {
-            if (min == matrix[j][i].GetDistance())
-                matrixforCol[j][i] = matrix[j][i];
-        }
-    }
-    */
-    vector<Animals> result(mas.size());
+
+    vector<Animals> result(amount);
     vector<vector<Animals>> matrixforRowCopy = matrixforRow;
     vector<vector<Animals>> matrixforColCopy = matrixforCol;
     vector<vector<Animals>> matrixCopy = matrix;
+    vector<vector<Animals>> matrixCopy1 = matrix;
+    vector<vector<Animals>> matrixforRowCopy1 = matrixforRow;
+    vector<vector<Animals>> matrixforColCopy1 = matrixforCol;
 
-    /*
-    for (unsigned int i = 0; i < ms.size(); i++) {
-        for (unsigned int j = 0; j < matrixCopy[i].size(); j++){
-            if ((matrixforColCopy[i][j] == matrixforRowCopy[i][j]) && (matrixforColCopy[i][j].GetExist() != 0)) {
-                type = matrixCopy[i][j].GetType();
-                result[i] = matrixCopy[i][j];
-                for (unsigned int m = ms.size() - 1; m != 0; m--) {
-                    if (ms[m].GetType() == type)
-                        for (unsigned int t = 0; t < ms.size(); t++) {
-                            if (m == j)
-                            m--;
-                            matrixCopy[m][t].SetExist(0);
-                            matrixforRowCopy[m][t].SetExist(0);
-                            matrixforColCopy[m][t].SetExist(0);
-                        }
-                    for (unsigned int t = 0; t < ms.size(); t++) {
-                        matrixCopy[t][m].SetExist(0);
-                        matrixforRowCopy[t][m].SetExist(0);
-                        matrixforColCopy[t][m].SetExist(0);
-                    }
-                }
-            }
-                    
-        }
+    for (int i = 0; i < amount; i++) {
+        result[i] = GetforResult(matrixCopy, matrixforRowCopy, matrixforColCopy, mas, mas.size());
+        matrixCopy = GetLessMatr(matrixCopy1, matrixforRowCopy1, matrixforColCopy1, mas, mas.size());
+        matrixforRowCopy = GetLessMatrRow(matrixCopy1, matrixforRowCopy1, matrixforColCopy1, mas, mas.size());
+        matrixforColCopy = GetLessMatrCol(matrixCopy1, matrixforRowCopy1, matrixforColCopy1, mas, mas.size());
+        matrixCopy1 = matrix;
+        matrixforRowCopy1 = matrixforRow;
+        matrixforColCopy1 = matrixforCol;
     }
-    */
 
-    for (unsigned int i = 0; i < result.size(); i++)
+
+    for (unsigned int i = 0; i < amount; i++)
         cout << result[i] << " ";
 
     system("pause");

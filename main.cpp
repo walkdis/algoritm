@@ -192,10 +192,13 @@ Animals GetforResult(vector<vector<Animals>> matrix, vector<vector<Animals>> mat
 
 int main() {
 
-    cout << "enter path to file \n";
-    string s, file_str, str; // считать сюда документ
-    cin >> s;
-    std::ifstream xfile(s, std::ios::binary);
+    cout << "enter path to file in \n";
+    string path_in, path_out, file_str, str; 
+    cin >> path_in;
+    cout << "enter path to file out \n";
+    cin >> path_out;  
+   
+    std::ifstream xfile(path_in, std::ios::binary);
     //узнаем размер файла, и выделяем память в строке
     xfile.seekg(0, std::ios_base::end);
     file_str.resize(xfile.tellg());
@@ -258,10 +261,10 @@ int main() {
         matrixforColCopy1 = matrixforCol;
     }
 
-
+    ofstream fout(path_out);
     for (unsigned int i = 0; i < amount; i++)
-        cout << result[i] << " ";
-
+        fout << result[i] << " ";
+    fout.close();
     system("pause");
     return 0;
 }

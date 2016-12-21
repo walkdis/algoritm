@@ -5,12 +5,12 @@ Animals::Animals(){
     x = 0;
     y = 0;
     type = 0;
-    p = 0;
+    p = 100;
     distance = 0;
 };
 
 Animals::Animals(int _type, int _x, int _y, int _p){
-    if (((_x < 0) || (_y < 0)) || ((_x == 0) && (_y == 0)))
+    if ((_x < 0) || (_y < 0) || ((_x == 0) && (_y==0)))
         throw Coordinates();
     if ((_p <= 0) || (_p > 100))
         throw Probability();

@@ -189,6 +189,32 @@ Animals GetforResult(vector<vector<Animals>> matrix, vector<vector<Animals>> mat
         }
 }
 
+int Geti(vector<vector<Animals>> matrix, vector<vector<Animals>> matrixforRow, vector<vector<Animals>> matrixforCol, vector<Animals> ms, int size) {
+    int type;
+    for (unsigned int i = 0; i < size; i++) {
+        for (unsigned int j = 0; j < matrix[i].size(); j++)
+            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != 0)) {
+                type = matrix[i][j].GetType();
+                return i;
+
+            }
+
+    }
+}
+
+int Getj(vector<vector<Animals>> matrix, vector<vector<Animals>> matrixforRow, vector<vector<Animals>> matrixforCol, vector<Animals> ms, int size) {
+    int type;
+    for (unsigned int i = 0; i < size; i++) {
+        for (unsigned int j = 0; j < matrix[i].size(); j++)
+            if ((matrixforCol[i][j] == matrixforRow[i][j]) && (matrixforCol[i][j].GetExist() != 0)) {
+                type = matrix[i][j].GetType();
+                return j;
+
+            }
+
+    }
+}
+
 
 int main() {
 
@@ -243,25 +269,33 @@ int main() {
     vector<vector<Animals>> matrixforRow = GetRowMatr(matrix, mas.size());
     vector<vector<Animals>> matrixforCol = GetColMatr(matrix, mas.size());
 
-    vector<Animals> result(amount);
+    vector<string> result(amount);
     vector<vector<Animals>> matrixforRowCopy = matrixforRow;
     vector<vector<Animals>> matrixforColCopy = matrixforCol;
     vector<vector<Animals>> matrixCopy = matrix;
-    vector<vector<Animals>> matrixCopy1 = matrix;
-    vector<vector<Animals>> matrixforRowCopy1 = matrixforRow;
-    vector<vector<Animals>> matrixforColCopy1 = matrixforCol;
+    double res = 0.0;
 
     for (int i = 0; i < amount; i++) {
-        result[i] = GetforResult(matrixCopy, matrixforRowCopy, matrixforColCopy, mas, mas.size());
-        matrixCopy = GetLessMatr(matrixCopy1, matrixforRowCopy1, matrixforColCopy1, mas, mas.size());
-        matrixforRowCopy = GetLessMatrRow(matrixCopy1, matrixforRowCopy1, matrixforColCopy1, mas, mas.size());
-        matrixforColCopy = GetLessMatrCol(matrixCopy1, matrixforRowCopy1, matrixforColCopy1, mas, mas.size());
-        matrixCopy1 = matrix;
-        matrixforRowCopy1 = matrixforRow;
-        matrixforColCopy1 = matrixforCol;
+        Animals animal = Animals(GetforResult(matrixCopy, matrixforRowCopy, matrixforColCopy, mas, mas.size()));
+        int from, to;
+        from = Geti(matrixCopy, matrixforRowCopy, matrixforColCopy, mas, mas.size());
+        to = Getj(matrixCopy, matrixforRowCopy, matrixforColCopy, mas, mas.size());
+        stringstream take;
+        string get;
+        take << "from " << from << " to " << to << " " << animal << " " ;
+        get = take.str();
+        result[i] = get;
+        res += animal.GetDistance();
+        matrix = GetLessMatr(matrixCopy, matrixforRowCopy, matrixforColCopy, mas, mas.size());
+        matrixforRow = GetLessMatrRow(matrixCopy, matrixforRowCopy, matrixforColCopy, mas, mas.size());
+        matrixforCol = GetLessMatrCol(matrixCopy, matrixforRowCopy, matrixforColCopy, mas, mas.size());
+        matrixCopy = matrix;
+        matrixforRowCopy = matrixforRow;
+        matrixforColCopy = matrixforCol;
     }
 
     ofstream fout(path_out);
+    fout << res << "\n";
     for (unsigned int i = 0; i < amount; i++)
         fout << result[i] << " ";
     fout.close();

@@ -101,17 +101,25 @@ void main() {
     }
     int amount = CountType(mas);
     vector<string> result(amount);
+    double res;
     mas = CountDistance(mas, animals);
     for (int i = 0; i < amount; i++) {
         animals = GetMin(mas);
         stringstream take;
         string get;
         take << animals << " ";
+        res += animals.GetDistance();
         get = take.str();
         result[i] = get;
         mas = DeleteType(mas, animals.GetType());
         mas = CountDistance(mas, animals);
     }
+
+    ofstream fout(path_out);
+    fout << res << "\n";
+    for (unsigned int i = 0; i < amount; i++)
+        fout << result[i] << " ";
+    fout.close();
 
 
 }
